@@ -8,16 +8,22 @@
 #### How can i declare my table ?
 ```
 #
-insert contact
-num_societe,integer,1,20
-id_etat_civil,integer,1,2
-id_sexe,integer,1,2
-id_adresse,integer,1,2
-nom_contact,@nom
-prenom_contact,@prenom
-date_naissance_contact,dateBirthday
-email_contact,email
-fonction_contact,@fonction
-telephone_contact,phone
+insert contact_enterprise
+name;@name
+forname;@forname
+email;email
+phone_number;phone
+fonction;@fonction
+street;@street
+postal_code;postalcode
+pays;@country
 ###
+quantity:1
+```
+
+This request will produce this
+
+```SQL
+insert into contact_enterprise(name,forname,email,phone_number,fonction,street,postal_code,pays)
+values('Germain','Louison','louison.germain@debian.org','06240228553','Electricien','37, ALLEE DES MERLES',03613,'Sao Tomé-et-Principe');
 ```
