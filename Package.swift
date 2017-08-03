@@ -3,5 +3,8 @@
 import PackageDescription
 
 let package = Package(
-    name: "filldatabase"
+    name: "filldatabase",
+    dependencies: [
+        .Package(url: "https://github.com/kylef/Commander", "0.6.0")
+    ]
 )
