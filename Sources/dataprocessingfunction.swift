@@ -13,7 +13,7 @@ import Foundation
 //
 func getStreet() -> String
 {
-    var value = getRandomDataFromFile(pathfile: FOLDER_PATH, typeofdata: "@street")
+    var value = getRandomDataFromFile(typeofdata: "@street")
     // We're adding the number with the street
     // Removing the first quote
     value = value.substring(from: 1)
@@ -37,7 +37,7 @@ func getStreet() -> String
 //
 func getCity() -> String
 {
-    var value = getRandomDataFromFile(pathfile: FOLDER_PATH, typeofdata: "@city")
+    var value = getRandomDataFromFile(typeofdata: "@city")
     // Adding a escape caracter for the '
     value = value.substring(with: 1,max: value.length - 1).replacingOccurrences(of: "'", with: "''")
     return "'\(value)'"
@@ -151,7 +151,7 @@ func getDataBeginsWithArobase(type: String) -> String
         return getCity()
     }
     // Simply get data from file
-    return  getRandomDataFromFile(pathfile: FOLDER_PATH, typeofdata: type)
+    return  getRandomDataFromFile(typeofdata: type)
 }
 // **
 // Standard format of data

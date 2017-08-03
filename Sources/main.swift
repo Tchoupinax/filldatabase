@@ -17,9 +17,9 @@ public let FILE_SAVE = "\(FOLDER_PATH)save"
 public let FILE_CONFIG = "\(FOLDER_PATH)filldatabase.conf"
 public let FILE_QUERY = "\(FOLDER_PATH)query"
 //
-public let REGEX_REQUEST_TYPE = "^[a-z]+ [a-z]+$"
+public let REGEX_REQUEST_TYPE = "^[a-z]+ [a-z_]+$"
 public let REGEX_REQUEST_LINE = "^[a-z_]+;[a-z@?]+(,\\d+,\\d+|\\[[a-z]*\\])?$"
-public let REGEX_REQUEST_QUANTITY = "^QUANTITY:(\\d+|[?]?[@]?[a-z]+(\\[[a-z]+\\])?)$"
+public let REGEX_REQUEST_QUANTITY = "^quantity:(\\d+|[?]?[@]?[a-z]+(\\[[a-z]+\\])?)$"
 //
 //
 // Management of arguments

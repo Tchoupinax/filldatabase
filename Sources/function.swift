@@ -13,29 +13,35 @@ import Foundation
 //
 #if os(Linux)
     import SwiftGlibc
-    public func arc4random_uniform(_ max: UInt32) -> Int32 {
+    public func arc4random_uniform(_ max: UInt32) -> Int32
+    {
         return (SwiftGlibc.rand() % Int32(max-1))
     }
 #endif
 //
 //
 //
-extension String {
+extension String
+{
     var length: Int {
         return characters.count
     }
-    func index(from: Int) -> Index {
+    func index(from: Int) -> Index
+    {
         return self.index(startIndex, offsetBy: from)
     }
-    func substring(from: Int) -> String {
+    func substring(from: Int) -> String
+    {
         let fromIndex = index(from: from)
         return substring(from: fromIndex)
     }
-    func substring(to: Int) -> String {
+    func substring(to: Int) -> String
+    {
         let toIndex = index(from: to)
         return substring(to: toIndex)
     }
-    func substring(with min: Int, max: Int) -> String {
+    func substring(with min: Int, max: Int) -> String
+    {
         let startIndex = index(from: min)
         let endIndex = index(from: max)
         return substring(with: startIndex..<endIndex)
@@ -115,7 +121,7 @@ func readQueryFileToArray(path: String) -> [Request]
 }
 //
 //
-// Read file and return all content throught String
+// Read file and return all content throught a String
 func getStringFromFile(pathfile: String) -> String
 {
     let manager = FileManager.default
@@ -126,23 +132,25 @@ func getStringFromFile(pathfile: String) -> String
     }
     else
     {
-        print("File \(pathfile) unfound !")
+        print("====== ERROR ======")
+        print("File \(pathfile) not found !")
+        exit(1)
         exit(1)
     }
 }
 //
 //
-// Permet d'écrire dans un fichier
+// This function allows to write a string in a file with two cases
+//   * File exists : It writes at the end of the file
+//   * File does not exist : It creates the file and write inside
 func writeToFile(pathfile: String, whattowrite: String)
 {
     let manager = FileManager.default
     if manager.fileExists(atPath: pathfile)
     {
-        // Transformation en url avec URL(string: pathfile)
         if let fileHandle = try? FileHandle(forWritingTo: URL(string: pathfile)!)
         {
             fileHandle.seekToEndOfFile()
-            // Transformation de la string en data
             fileHandle.write(whattowrite.data(using: .utf8)!)
             fileHandle.closeFile()
         }
@@ -153,38 +161,33 @@ func writeToFile(pathfile: String, whattowrite: String)
     }
 }
 //
-func getRandomDataFromFile(pathfile: String, typeofdata: String) -> String
+//
+// Allows to take a random data from a file
+// In fact select a random line in this file and return the value of it
+func getRandomDataFromFile(typeofdata: String) -> String
 {
-    let val = getStringFromFile(pathfile: pathfile + typeofdata)
-    let valArray = val.components(separatedBy: "\n")
-    let index = Int(arc4random_uniform(UInt32(valArray.count - 1)))
-    return "'\(valArray[index])'"
+    if fileExists(file: FOLDER_PATH + typeofdata)
+    {
+        let val = getStringFromFile(pathfile: FOLDER_PATH + typeofdata)
+        let valArray = val.components(separatedBy: "\n")
+        let index = Int(arc4random_uniform(UInt32(valArray.count - 1)))
+        return "'\(valArray[index])'"
+    }
+    else
+    {
+        print("====== ERROR ======")
+        print("File \(FOLDER_PATH + typeofdata) not found !")
+        exit(1)
+    }
 }
 //
-func getConditionalDataFromFile(pathfile: String, typeofdata: String, number: Int) -> String
-{
-    let val = getStringFromFile(pathfile: pathfile + typeofdata)
-    let valArray = val.components(separatedBy: "\n")
-    var indDebut = 0
-    while indDebut < valArray.count - 1 && valArray[indDebut] != ":\(number)"
-    {
-        indDebut = indDebut + 1
-    }
-    var indFin = indDebut
-    while indFin < valArray.count - 1 && valArray[indFin] != ":\(number + 1)"
-    {
-        indFin = indFin + 1
-    }
-    let index = randomIntegerBetween(big: indFin - 1, little: indDebut + 1)
-    return "'\(valArray[index])'"
-}
 //
+// Returns a random String of the given length
 func randomString(length: Int) -> String
 {
     let allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     let allowedCharsCount = UInt32(allowedChars.characters.count)
     var randomString = ""
-    
     for _ in 0..<length
     {
         let randomNum = Int(arc4random_uniform(allowedCharsCount))
@@ -195,6 +198,8 @@ func randomString(length: Int) -> String
     return randomString
 }
 //
+//
+// Returns a random integer between two int
 func randomIntegerBetween(big: Int, little: Int) -> Int
 {
     return Int(arc4random_uniform(UInt32(big - little + 1))) + little
