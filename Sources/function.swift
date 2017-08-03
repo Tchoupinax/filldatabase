@@ -135,7 +135,6 @@ func getStringFromFile(pathfile: String) -> String
         print("====== ERROR ======")
         print("File \(pathfile) not found !")
         exit(1)
-        exit(1)
     }
 }
 //
