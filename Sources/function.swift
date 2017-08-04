@@ -58,6 +58,26 @@ func fileExists(file: String) -> Bool
 {
     return FileManager.default.fileExists(atPath: file)
 }
+// Or a directory ...
+func directoryExists(path: String) -> Bool
+{
+    var isDir : ObjCBool = false
+    if FileManager.default.fileExists(atPath: path, isDirectory:&isDir)
+    {
+        if isDir.boolValue
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
+    }
+    else
+    {
+        return false
+    }
+}
 //
 //
 // Configuration

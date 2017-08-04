@@ -122,13 +122,19 @@ func getLorem(number: Int) -> String
 // **
 // Get integer with pattern "typeofdatas,min,max"
 //
-func getDataFromPattern(pattern: String) -> String
+func getDataFromPattern(pattern: String, val: Any?) -> String
 {
     if pattern.components(separatedBy: ",")[0] == "integer"
     {
         let v2 = Int(pattern.components(separatedBy: ",")[1])
         let v3 = Int(pattern.components(separatedBy: ",")[2])
         return String(randomIntegerBetween(big: v3!, little: v2!))
+    }
+    else if pattern.components(separatedBy: ",")[0] == "%pk%"
+    {
+        let v1 : Int = val as! Int
+        let v2 : Int = Int(pattern.components(separatedBy: ",")[1])!
+        return String(v1 + v2)
     }
     print("getDataFromPattern(pattern: String) -> Error")
     return "NULL"
@@ -173,6 +179,6 @@ func getStandardRandomData(type: String, saved: [String:String]) -> String
         case "email":
             return getEmail(forname: saved["forname"], name: saved["name"])
         default:
-            return "getstandardrandomdata : pas trouvé"
+            return "null"
     }
 }

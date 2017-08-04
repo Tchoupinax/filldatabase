@@ -129,9 +129,13 @@ func start()
         //
         // *****
         //     Looking for if queries are based on quantity or not
-        // 
         //
         //
+        //
+        // This dictionnay allows to save data throught differents columns
+        // (e.g. : save name for reuse it in the email)
+        var savedValue = [String:String]()
+        savedValue["%pk%"] = String("0")
         // CASE ONE
         // Queries are bases on a column
         // We want to have as many request as the file contains row to have each case
@@ -159,9 +163,6 @@ func start()
                     // Initialize query
                     var queryTOP = "insert into("
                     var queryBOTTOM = "values("
-                    // This dictionnay allows to save data throught differents columns
-                    // (e.g. : save name for reuse it in the email)
-                    var savedValue = [String:String]()
                     // Browse all required data in the request
                     for nb in 0...query.getDataCount() - 1
                     {
@@ -196,24 +197,25 @@ func start()
                             }
                         }
                     }
+                    savedValue["%pk%"] = String(Int(savedValue["%pk%"]!)! + 1)
                     // Writing the query to the file and reset variable
                     writeToFile(pathfile: FILE_SAVE, whattowrite: "\(queryTOP)\n\(queryBOTTOM)\n")
                     queryTOP = ""
                     queryBOTTOM = ""
                 }
             }
-            // In other hand the master is a file with condition
-            // So we'll get the masterkey and the master value
-            // and adding the good key when we add the master value
-            // e.g
-            // #
-            // insert enterprise
-            // id;null
-            // type;?@typetechno[id]
-            // ###
-            // QUANTITY:?@type[id]
-            // In THIS CASE id can have no value because
-            // quantity is base on and it will be filled in terms of quantity
+                // In other hand the master is a file with condition
+                // So we'll get the masterkey and the master value
+                // and adding the good key when we add the master value
+                // e.g
+                // #
+                // insert enterprise
+                // id;null
+                // type;?@typetechno[id]
+                // ###
+                // QUANTITY:?@type[id]
+                // In THIS CASE id can have no value because
+                // quantity is base on and it will be filled in terms of quantity
             else
             {
                 // Query seems like "?@fileName[index]
@@ -229,9 +231,6 @@ func start()
                 let (listOfConditionalData, _) = getDataFromFile(filename: file)
                 // e.g. takes :1
                 var masterKeyValue : Int = -10
-                // This dictionnay allows to save data throught differents columns
-                // (e.g. : save name for reuse it in the email)
-                var savedValue = [String:String]()
                 // Browse all required data in the request
                 // Refers from above for more comments
                 var i = 0
@@ -292,6 +291,7 @@ func start()
                             }
                         }
                     }
+                    savedValue["%pk%"] = String(Int(savedValue["%pk%"]!)! + 1)
                     // Writing the query to the file and reset variable
                     writeToFile(pathfile: FILE_SAVE, whattowrite: "\(queryTOP)\n\(queryBOTTOM)\n")
                     queryTOP = ""
@@ -314,9 +314,7 @@ func start()
                 // Initialize query
                 var queryTOP = "insert into \(query.getTable())("
                 var queryBOTTOM = "values("
-                // This dictionnay allows to save data throught differents columns
-                // (e.g. : save name for reuse it in the email)
-                var savedValue = [String:String]()
+                // Initialize the %pk% var
                 // Browse all required data in the request
                 for nb in 0...query.getDataCount() - 1
                 {
@@ -334,6 +332,7 @@ func start()
                         queryBOTTOM = "\(queryBOTTOM)\(traitement(type: query.getData(at: nb), savedValue:&savedValue)));"
                     }
                 }
+                savedValue["%pk%"] = String(Int(savedValue["%pk%"]!)! + 1)
                 // Writing the query to the file and reset variable
                 writeToFile(pathfile: FILE_SAVE, whattowrite: "\(queryTOP)\n\(queryBOTTOM)\n")
                 queryTOP = ""
@@ -341,4 +340,68 @@ func start()
             }
         }
     }
+}
+//
+//
+// Performing the data process
+// RETURNS
+//    * The value
+//    * Saved value if needed
+func traitement(type: String, savedValue: inout [String:String]) -> String
+{
+    //
+    //
+    // Initialize with null for writing it in the query
+    // if the type of value in unknow
+    var value : String = "null"
+    //
+    //
+    // Data we're taking randomly in the appropriate file
+    if type.substring(to: 1) == "@"
+    {
+        value = getDataBeginsWithArobase(type: type)
+        // Saving useful data
+        if type == "@name"
+        {
+            savedValue["name"] = value.substring(with: 1, max: value.length - 1)
+        }
+        else if type == "@forname"
+        {
+            savedValue["forname"] = value.substring(with: 1, max: value.length - 1)
+        }
+    }
+    //
+    //
+    // Data we're taking randomly in the appropriate file
+    else if type.substring(to: 1) == "?"
+    {
+        let _ = type.components(separatedBy: "[")[0]
+        let _ = type.components(separatedBy: "[")[1].components(separatedBy: "]")[0]
+    }
+    //
+    //
+    // Other data which are randomly generated
+    else
+    {
+        // Type could seem like "integer,min,max"
+        // We're checking that here. If there is true,
+        // we call the appropriate function to get the right data
+        // Else we perform standard get
+        if type.components(separatedBy: ",").count == 3
+        {
+            value = getDataFromPattern(pattern: type, val: nil)
+        }
+        // But it alsa could seem like "%pk%,start"
+        else if type.components(separatedBy: ",").count == 2
+        {
+            value = getDataFromPattern(pattern: type, val: Int(savedValue["%pk%"]!))
+        }
+        else
+        {
+            value = getStandardRandomData(type: type, saved: savedValue)
+        }
+        
+    }
+    // Getting in our dictionnary
+    return value
 }

@@ -2,6 +2,12 @@
   "autoPin": true,
   "pins": [
     {
+      "package": "CommandLine",
+      "reason": null,
+      "repositoryURL": "https://github.com/Tchoupinax/CommandLine",
+      "version": "1.0.0"
+    },
+    {
       "package": "Commander",
       "reason": null,
       "repositoryURL": "https://github.com/kylef/Commander",
