@@ -16,7 +16,7 @@ func checkQueryFile() -> (Bool, Int, String)
 {
     // We're getting the content of the file throught a string
     let data = FileManager.default.contents(atPath: FILE_QUERY)
-    let content = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+    let content = String(data: data!, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!
     // We transform the string to an array
     let contentArray = content.components(separatedBy: "\n")
     // We browse all the array
@@ -124,6 +124,8 @@ func start()
     // For each one, we process it
     for query in data
     {
+        let comments = "--\n--\n-- TABLE \(query.getTable())\n---------------------------------------------------------------------------\n"
+        writeToFile(pathfile: FILE_SAVE, whattowrite: comments)
         //
         //
         //

@@ -19,7 +19,7 @@ public var FILE_CONFIG : String = ""
 public var FILE_QUERY : String = ""
 //
 public let REGEX_REQUEST_TYPE = "^[a-z]+ [a-z_]+$"
-public let REGEX_REQUEST_LINE = "^[a-z_]+;([a-z@?]+(,\\d+,\\d+|\\[[a-z]*\\])?|(%pk%,\\d+)?)$"
+public let REGEX_REQUEST_LINE = "^[a-z_0-9]+;([a-z@?]+(,\\d+,\\d+|\\[[a-z]*\\])?|(%pk%,\\d+)?)$"
 public let REGEX_REQUEST_QUANTITY = "^quantity:(\\d+|[?]?[@]?[a-z]+(\\[[a-z]+\\])?)$"
 //
 //

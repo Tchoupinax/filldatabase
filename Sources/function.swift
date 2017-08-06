@@ -62,9 +62,15 @@ func fileExists(file: String) -> Bool
 func directoryExists(path: String) -> Bool
 {
     var isDir : ObjCBool = false
-    if FileManager.default.fileExists(atPath: path, isDirectory:&isDir)
+    if FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
     {
-        if isDir.boolValue
+        let isDirectory: Bool
+        #if os(Linux)
+            isDirectory = isDir
+        #else
+            isDirectory = isDir.boolValue
+        #endif
+        if isDirectory
         {
             return true
         }
@@ -148,7 +154,7 @@ func getStringFromFile(pathfile: String) -> String
     if manager.fileExists(atPath: pathfile)
     {
         let data = manager.contents(atPath: pathfile)
-        return NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+        return String(data: data!, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!
     }
     else
     {
