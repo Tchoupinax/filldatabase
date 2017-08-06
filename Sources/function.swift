@@ -61,6 +61,7 @@ func fileExists(file: String) -> Bool
 // Or a directory ...
 func directoryExists(path: String) -> Bool
 {
+    /*
     var isDir : ObjCBool = false
     if FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
     {
@@ -77,6 +78,23 @@ func directoryExists(path: String) -> Bool
     {
         return false
     }
+    */
+    let u = URL(fileURLWithPath: path)  
+    if let v = try? u.resourceValues(forKeys: [.isDirectoryKey]) 
+    {  
+        if v.isDirectory! 
+        {  
+            return true 
+        } 
+        else 
+        {  
+            return false 
+        }  
+    } 
+    else 
+    {  
+        return false
+    }  
 }
 //
 //
