@@ -15,7 +15,10 @@ import Foundation
     import SwiftGlibc
     public func arc4random_uniform(_ max: UInt32) -> Int32
     {
-        return (SwiftGlibc.rand() % Int32(max-1))
+        srand(UInt32(time(nil)))
+        let ms = NSDate().timeIntervalSince1970 * 100000
+        let ms2 = ms.truncatingRemainder(dividingBy: 100000)
+        return (Int32(ms2) % Int32(max-1))
     }
 #endif
 //
