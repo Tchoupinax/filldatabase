@@ -64,7 +64,13 @@ func directoryExists(path: String) -> Bool
     var isDir : ObjCBool = false
     if FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
     {
-         if isDir
+        let isDirectory: Bool
+        #if os(Linux)
+            isDirectory = isDir
+        #else
+            isDirectory = isDir.boolValue
+        #endif
+        if isDirectory
         {
             return true
         }
