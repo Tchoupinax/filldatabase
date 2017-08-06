@@ -124,6 +124,8 @@ func start()
     // For each one, we process it
     for query in data
     {
+        let comments = "--\n--\n-- TABLE \(query.getTable())\n---------------------------------------------------------------------------\n"
+        writeToFile(pathfile: FILE_SAVE, whattowrite: comments)
         //
         //
         //
