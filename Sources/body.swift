@@ -163,7 +163,7 @@ func start()
                 for masterValue in array
                 {
                     // Initialize query
-                    var queryTOP = "insert into("
+                    var queryTOP = "insert into \(query.getTable())("
                     var queryBOTTOM = "values("
                     // Browse all required data in the request
                     for nb in 0...query.getDataCount() - 1
@@ -177,7 +177,7 @@ func start()
                             // We add the master value
                             if(query.getKey(at: nb) == (query.getQuantity() as! String))
                             {
-                                queryBOTTOM = "\(queryBOTTOM)\(masterValue),"
+                                queryBOTTOM = "\(queryBOTTOM)'\(masterValue)',"
                             }
                                 // Anyway else we process data as a classic process
                             else
@@ -191,7 +191,7 @@ func start()
                             queryTOP = "\(queryTOP)\(query.getKey(at: nb)))"
                             if(query.getData(at: nb) == (query.getQuantity() as! String))
                             {
-                                queryBOTTOM = "\(queryBOTTOM)\(masterValue));"
+                                queryBOTTOM = "\(queryBOTTOM)'\(masterValue)');"
                             }
                             else
                             {
@@ -238,7 +238,7 @@ func start()
                 var i = 0
                 while i < listOfConditionalData.count - 1
                 {
-                    var queryTOP = "insert into("
+                    var queryTOP = "insert into \(query.getTable())("
                     var queryBOTTOM = "values("
                     // If data seems like ":1", we're getting the value and adding
                     // it to our variable

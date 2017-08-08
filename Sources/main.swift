@@ -23,6 +23,12 @@ public let REGEX_REQUEST_LINE = "^[a-z_0-9]+;([a-z@?]+(,\\d+,\\d+|\\[[a-z]*\\])?
 public let REGEX_REQUEST_QUANTITY = "^quantity:(\\d+|[?]?[@]?[a-z]+(\\[[a-z]+\\])?)$"
 //
 //
+// Seeding for random function under Linux
+#if os(Linux)
+    srand(time(nil))
+#endif
+//
+//
 // Using the frameworks Commander to manage command line
 // https://github.com/kylef/Commander
 // Options are listed below

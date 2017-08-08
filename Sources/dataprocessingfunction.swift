@@ -48,15 +48,17 @@ func getCity() -> String
 func getPhoneNumber() -> String
 {
     var number = "0" + String(randomIntegerBetween(big: 9, little: 1))
-    var tmp = 0
     for _ in 0...3
     {
-        tmp = randomIntegerBetween(big: 99, little: 1)
+        let tmp = randomIntegerBetween(big: 99, little: 1)
         if tmp < 10
         {
             number = "\(number)0\(String(tmp))"
         }
-        number = "\(number)\(tmp)"
+        else
+        {
+            number = "\(number)\(String(tmp))"
+        }
     }
     return "'\(number)'"
 }
@@ -112,11 +114,11 @@ func getLorem(number: Int) -> String
     let value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     if number >= value.length
     {
-        return value
+        return "'\(value)'"
     }
     else
     {
-        return value.substring(to: number)
+        return "'\(value.substring(to: number))'"
     }
 }
 // **
@@ -136,8 +138,12 @@ func getDataFromPattern(pattern: String, val: Any?) -> String
         let v2 : Int = Int(pattern.components(separatedBy: ",")[1])!
         return String(v1 + v2)
     }
+    else if pattern.components(separatedBy: ",")[0] == "lorem"
+    {
+        return getLorem(number: Int(pattern.components(separatedBy: ",")[1])!)
+    }
     print("getDataFromPattern(pattern: String) -> Error")
-    return "NULL"
+    return "null"
 }
 //
 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
