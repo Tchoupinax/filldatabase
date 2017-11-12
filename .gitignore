@@ -2,3 +2,5 @@
 filldatabase.xcodeproj
 Ressources/*
 .build/*
+Package.pins
+
